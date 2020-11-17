@@ -10,10 +10,10 @@ dim = 2          #мерность координат
 bh_rad = 0       #радиус черной дыры
 time_end = 1     #время работы (в минутах)
 iter_num = 10
-time_arr = (3, 10, 15)
+time_arr = (3, 5, 15)
 dim_arr = (5, 10, 50)
-fit_name = {1:'Bent Cigar',2:'Discus',3:'Rastrigin',4:'Rosenbrok',5:'Sphere'}
-coor = ((-5,5),(-5,5),(-5.12,5.12),(-5,10),(-100,100)) 
+fit_name = {1:'Bent Cigar',2:'Discus',3:'Rastrigin',4:'Rosenbrok',5:'Sphere',6:'Schwefel'}
+coor = ((-5,5),(-5,5),(-5.12,5.12),(-5,10),(-100,100),(-500,500)) 
 
 
 def gen_coor(): #генерация координат
@@ -33,6 +33,8 @@ def fit_ev(x, num): #функция cigar
         return sum([(100*(x[i]**2 - x[i+1])**2 + (x[i] - 1)**2) for i in range(dim-1)]) #rosenbrok
     if num == 5:
         return sum([(x[i]**2) for i in range(dim)]) #sphere
+    if num == 6:
+        return 418.9829*dim - sum([(x[i]*m.sin(m.sqrt(abs(x[i])))) for i in range(0, dim)])
 
 def radius(bh, st):  #проверка на вхождение за горизонт событий
     a = m.sqrt(sum([((bh[i]-st[i])**2) for i in range(dim)]))
@@ -47,8 +49,8 @@ for fit_num in sorted(fit_name):
         print('_________________________')
         for dim in dim_arr:
             for time_end in time_arr:
-                coor_min = coor[fit_num][0]
-                coor_max = coor[fit_num][1]
+                coor_min = coor[fit_num-1][0]
+                coor_max = coor[fit_num-1][1]
 
                 print(fit_name[fit_num],' dim =',dim,' time =',time_end)
                 print('(',coor_min,',',coor_max,')')
